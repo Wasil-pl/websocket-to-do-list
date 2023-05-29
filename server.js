@@ -1,8 +1,12 @@
 const express = require('express');
-const app = express();
 const socket = require('socket.io');
+const cors = require('cors');
 
 const tasks = [];
+
+const app = express();
+
+app.use(cors());
 
 const server = app.listen(8000, () => console.log('Server is running on port 8000'));
 

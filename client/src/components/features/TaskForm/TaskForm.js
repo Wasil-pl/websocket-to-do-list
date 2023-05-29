@@ -3,7 +3,7 @@ import styles from './TaskForm.module.scss';
 import Button from '../../common/Button/Button';
 import shortid from 'shortid';
 
-const TaskForm = ({ socket, addTask }) => {
+const TaskForm = ({ addTask }) => {
   const [taskName, setTaskName] = useState('');
 
   const submitForm = (e) => {

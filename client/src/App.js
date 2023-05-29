@@ -10,15 +10,22 @@ import './styles/global.scss';
 const App = () => {
   const [socket, setSocket] = useState(null);
   const [tasks, setTasks] = useState([]);
+  const clearSocket = () => setSocket(null);
 
   useEffect(() => {
-    const newSocket = io('http://localhost:8000/');
+    const newSocket = io('http://localhost:8000');
     setSocket(newSocket);
+
+    return () => {
+      clearSocket();
+    };
   }, []);
 
-  const removeTask = (taskId) => {
+  const removeTask = (taskId, shouldEmit) => {
     setTasks((tasks) => tasks.filter((task) => task.id !== taskId));
-    socket.emit('removeTask', taskId);
+    if (shouldEmit) {
+      socket.emit('removeTask', taskId);
+    }
   };
 
   const addTask = (task) => {

@@ -4,7 +4,7 @@ import Button from '../../common/Button/Button';
 
 const ListView = ({ tasks, removeTask }) => {
   const handleConfirmDelete = (taskId) => {
-    removeTask(taskId);
+    removeTask(taskId, true);
   };
 
   return (
