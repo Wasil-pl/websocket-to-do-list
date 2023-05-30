@@ -16,6 +16,18 @@ const App = () => {
     const newSocket = io('http://localhost:8000');
     setSocket(newSocket);
 
+    newSocket.on('addTask', (task) => {
+      setTasks((tasks) => [...tasks, task]);
+    });
+
+    newSocket.on('removeTask', (taskId) => {
+      setTasks((tasks) => tasks.filter((task) => task.id !== taskId));
+    });
+
+    newSocket.on('updateData', (tasksList) => {
+      updateTasks(tasksList);
+    });
+
     return () => {
       clearSocket();
     };
@@ -31,6 +43,10 @@ const App = () => {
   const addTask = (task) => {
     setTasks((tasks) => [...tasks, task]);
     socket.emit('addTask', task);
+  };
+
+  const updateTasks = (tasks) => {
+    setTasks(tasks);
   };
 
   return (

@@ -2,7 +2,7 @@ const express = require('express');
 const socket = require('socket.io');
 const cors = require('cors');
 
-const tasks = [];
+let tasks = [];
 
 const app = express();
 
@@ -15,16 +15,18 @@ const io = socket(server);
 io.on('connection', (socket) => {
   console.log('New client! Its id – ' + socket.id);
 
+  io.to(socket.id).emit('updateData', tasks);
+
   socket.on('addTask', (taskData) => {
     tasks.push(taskData);
-    console.log('new task added by user');
-    socket.broadcast.emit('addTask', 'New task added');
+    console.log('new task added by user ' + socket.id);
+    io.emit('updateData', tasks);
   });
 
   socket.on('removeTask', (taskId) => {
     console.log('Task ID to remove:', taskId);
-    tasks.filter((task) => task.id !== taskId);
-    socket.broadcast.emit('removeTask', taskId);
+    tasks = tasks.filter((task) => task.id !== taskId);
+    io.emit('updateData', tasks);
   });
 });
 

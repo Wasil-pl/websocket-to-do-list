@@ -8,6 +8,9 @@ const TaskForm = ({ addTask }) => {
 
   const submitForm = (e) => {
     e.preventDefault();
+
+    if (taskName === '') return window.alert('please, type your description');
+
     const task = { id: shortid(), name: taskName };
     addTask(task);
     setTaskName('');
