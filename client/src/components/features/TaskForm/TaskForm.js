@@ -22,7 +22,7 @@ const TaskForm = ({ addTask }) => {
         onChange={(e) => setTaskName(e.target.value)}
         value={taskName}
         className={styles.textInput}
-        autocomplete="off"
+        autoComplete="off"
         type="text"
         placeholder="Type your description"
         id="task-name"

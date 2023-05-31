@@ -10,7 +10,6 @@ import './styles/global.scss';
 const App = () => {
   const [socket, setSocket] = useState(null);
   const [tasks, setTasks] = useState([]);
-  const clearSocket = () => setSocket(null);
 
   useEffect(() => {
     const newSocket = io('http://localhost:8000');
@@ -24,29 +23,24 @@ const App = () => {
       setTasks((tasks) => tasks.filter((task) => task.id !== taskId));
     });
 
-    newSocket.on('updateData', (tasksList) => {
-      updateTasks(tasksList);
+    newSocket.on('updateData', (tasks) => {
+      setTasks(tasks);
     });
 
     return () => {
-      clearSocket();
+      setSocket(null);
     };
   }, []);
 
-  const removeTask = (taskId, shouldEmit) => {
+  const removeTask = (taskId) => {
     setTasks((tasks) => tasks.filter((task) => task.id !== taskId));
-    if (shouldEmit) {
-      socket.emit('removeTask', taskId);
-    }
+
+    socket.emit('removeTask', taskId);
   };
 
   const addTask = (task) => {
     setTasks((tasks) => [...tasks, task]);
     socket.emit('addTask', task);
-  };
-
-  const updateTasks = (tasks) => {
-    setTasks(tasks);
   };
 
   return (
