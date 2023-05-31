@@ -1,11 +1,15 @@
 import React from 'react';
 import styles from './Button.module.scss';
 
-const Button = ({ onClick, children, btnRed }) => {
+const Button = ({ onClick, children, btnRed, btnOrange }) => {
   const classes = [];
 
   if (btnRed) {
     classes.push(styles.btnRed);
+  }
+
+  if (btnOrange) {
+    classes.push(styles.btnOrange);
   }
 
   return (

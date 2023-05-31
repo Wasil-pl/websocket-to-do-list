@@ -28,6 +28,15 @@ io.on('connection', (socket) => {
     tasks = tasks.filter((task) => task.id !== taskId);
     io.emit('updateData', tasks);
   });
+
+  socket.on('editTask', (taskData) => {
+    console.log('taskData: ', taskData);
+    const task = tasks.find((task) => task.id === taskData.id);
+    if (task) {
+      task.name = taskData.name;
+    }
+    socket.broadcast.emit('editTask', taskData);
+  });
 });
 
 app.use((req, res) => res.status(404).json({ message: '404 not found...' }));

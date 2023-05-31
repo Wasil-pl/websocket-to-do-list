@@ -10,6 +10,7 @@ import './styles/global.scss';
 const App = () => {
   const [socket, setSocket] = useState(null);
   const [tasks, setTasks] = useState([]);
+  const [editedTaskData, setEditedTaskData] = useState(null);
 
   useEffect(() => {
     const newSocket = io('http://localhost:8000');
@@ -43,14 +44,20 @@ const App = () => {
     socket.emit('addTask', task);
   };
 
+  const editTask = (taskData) => {
+    setTasks(tasks.map((task) => (task.id === taskData.id ? { ...task, ...{ name: taskData.name } } : task)));
+    socket.emit('editTask', taskData);
+    setEditedTaskData(null);
+  };
+
   return (
     <div className="App">
       <Header>ToDoList.app</Header>
 
       <TaskSection>
         <h2>Tasks</h2>
-        <ListView tasks={tasks} removeTask={removeTask} />
-        <TaskForm socket={socket} addTask={addTask} />
+        <ListView tasks={tasks} removeTask={removeTask} editedTask={setEditedTaskData} />
+        <TaskForm socket={socket} addTask={addTask} editedTaskData={editedTaskData} editTask={editTask} />
       </TaskSection>
     </div>
   );
