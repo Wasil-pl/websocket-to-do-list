@@ -35,7 +35,6 @@ const App = () => {
 
   const removeTask = (taskId) => {
     setTasks((tasks) => tasks.filter((task) => task.id !== taskId));
-
     socket.emit('removeTask', taskId);
   };
 
@@ -45,7 +44,7 @@ const App = () => {
   };
 
   const editTask = (taskData) => {
-    setTasks(tasks.map((task) => (task.id === taskData.id ? { ...task, ...{ name: taskData.name } } : task)));
+    setTasks(tasks.map((task) => (task.id === taskData.id ? { ...task, name: taskData.name } : task)));
     socket.emit('editTask', taskData);
     setEditedTaskData(null);
   };
@@ -56,7 +55,7 @@ const App = () => {
 
       <TaskSection>
         <h2>Tasks</h2>
-        <ListView tasks={tasks} removeTask={removeTask} editedTask={setEditedTaskData} />
+        <ListView tasks={tasks} removeTask={removeTask} setEditedTask={setEditedTaskData} />
         <TaskForm socket={socket} addTask={addTask} editedTaskData={editedTaskData} editTask={editTask} />
       </TaskSection>
     </div>
